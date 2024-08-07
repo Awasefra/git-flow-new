@@ -9,9 +9,6 @@ jobs:
   deploy:
     runs-on: ubuntu-23.04
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
       - name: SSH into Ubuntu Server
         uses: appleboy/ssh-action@master
         with:
