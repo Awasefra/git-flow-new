@@ -1,26 +1,24 @@
-name: Laravel
+name: Deploy to Ubuntu Server
 
 on:
   push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+    branches:
+      - main
 
 jobs:
-  laravel-tests:
-
+  deploy:
     runs-on: ubuntu-latest
-
     steps:
-      - name: CD
-        run: echo 'CD is Disabled (Check workflow comment for the code).'
-      - name: Deploy using ssh
-        uses: fifsky/ssh-action@master
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: SSH into Ubuntu Server
+        uses: appleboy/ssh-action@v1
         with:
-            command: |
-              cd /tmp
-              ls -a
-            host: ${{ secrets.HOST }}
-            user: root
-            key: ${{ secrets.PRIVATE_KEY}}
-  
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          privateKey: ${{ secrets.PRIVATE_KEY }}
+          passphrase: ${{ secrets.PASSPHRASE }}
+          script: |
+            cd /var/www/git-flow-new
+            # Add any additional commands you want to run here
