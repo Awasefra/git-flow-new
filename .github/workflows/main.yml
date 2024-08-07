@@ -1,0 +1,31 @@
+name: Deploy to Proxmox
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up SSH   
+
+        uses: webfactory/ssh-agent@v1   
+
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+          ssh-private-key-passphrase: ${{ secrets.SSH_PRIVATE_KEY_PASSPHRASE }}
+
+      - name: SSH into Proxmox container
+        uses: ssh-actions/ssh@v1
+        with:
+          host: ${{ secrets.IP_HOS }}
+          username: ${{ secrets.USERNAME }}
+          run: |
+            cd /var/www/
+            composer install
+            cp .env.example .env
+            php artisan key:generate
