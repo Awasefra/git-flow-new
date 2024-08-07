@@ -1,1 +1,1 @@
-file.txt
+ini adalah file 2
